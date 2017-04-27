@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20161123032354) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.integer  "guest_count",      default: 1, null: false
-    t.index ["check_in_date"], name: "index_trips_on_guest_and_listing_and_check_in_date"
+    t.index ["guest_id", "listing_id", "check_in_date"], name: "index_trips_on_guest_id_and_listing_id_and_check_in_date"
     t.index ["guest_id"], name: "index_trips_on_guest_id"
     t.index ["listing_id"], name: "index_trips_on_listing_id"
   end
