@@ -20,7 +20,7 @@ $listing-gutter: line-height-rem(0.25);
 
     &.is-mini {
       flex-basis: ($measure * 0.333);
-    max-width: ($measure * 0.333);
+      max-width: ($measure * 0.333);
     }
   }
 
