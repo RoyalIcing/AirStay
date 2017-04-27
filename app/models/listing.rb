@@ -1,6 +1,8 @@
 class Listing < ApplicationRecord
   belongs_to :host, class_name: 'User'
   belongs_to :region
+  has_many :trips
+  has_many :reviews
 
   validates :address, presence: true
 
@@ -23,11 +25,9 @@ class Listing < ApplicationRecord
   def self.service_fee_cents
     10_00
   end
-end
 
-# Provisions
+  # Provisions
 
-class Listing
   def provisions
     ListingProvision.by_listing(self)
   end
@@ -35,11 +35,9 @@ class Listing
   def provision_for_date(date)
     provisions.starting_from(date).limit(1).first
   end
-end
 
-# Trips
+  # Trips
 
-class Listing
   DEFAULT_DAYS_AHEAD = 30
 
   def available_date_ranges(days_ahead, start_date)
@@ -59,9 +57,4 @@ class Listing
   def nightly_fee_for_earliest_available_date(days_ahead = DEFAULT_DAYS_AHEAD)
     cost_for_earliest_available_date(days_ahead).try{ |cost| cost.night_fees.first }
   end
-end
-
-class Listing
-  has_many :trips
-  has_many :reviews
 end

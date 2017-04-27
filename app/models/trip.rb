@@ -1,6 +1,7 @@
 class Trip < ApplicationRecord
   belongs_to :guest, class_name: 'User'
   belongs_to :listing
+  has_many :reviews
 
   class CheckedDatesValidator < ActiveModel::Validator
     def validate(record)
@@ -24,18 +25,19 @@ class Trip < ApplicationRecord
   def nights_count
     (check_out_date - check_in_date).to_i
   end
-end
 
-class Trip
+  # Find available trip dates for a particular listing
   def self.available_date_ranges_for_listing(listing, days_ahead, start_date)
     end_date = start_date + days_ahead
+
     trips = self.with_listing(listing).out_after_date(start_date).in_before_date(end_date)
 
+    # Using the trip dates, find all dates in between that are available
+    available_dates = []
     prev_end_date = nil
-    available_dates = trips.reduce([]) do |available_dates, trip|
+    trips.each do |trip|
       available_dates << Range.new(prev_end_date, trip.check_in_date, true) if prev_end_date
       prev_end_date = trip.check_out_date
-      available_dates
     end
 
     available_dates << Range.new(prev_end_date, end_date, true) if prev_end_date
@@ -48,14 +50,9 @@ class Trip
     date_ranges = available_date_ranges_for_listing(listing, days_ahead, start_date)
     date_ranges.first.try(:min)
   end
-end
 
-class Trip
+  # Calculate the cost over a trip’s duration
   def cost
     TripCost.new(listing, check_in_date, check_out_date) if valid?(:display)
   end
-end
-
-class Trip
-  has_many :reviews
 end
