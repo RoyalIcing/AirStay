@@ -1,22 +1,23 @@
+<div class="full-width">
+  <figure class="listing_hero">
+    <%= image_tag unsplash_image_url(@random_region.name, width: 1400, height: 600),
+      alt: @random_region.name, class: 'listing_hero_image'
+    %>
+  </figure>
+</div>
+
 <header>
   <% if @profile %>
-      <h1>Welcome <%= @profile.first_name %></h1>
-      <nav>
-        <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
-      </nav>
+      <h1>👋 <%= @random_region.country.emoji_flag %> Welcome <%= @profile.first_name %></h1>
   <% else %>
-      <h1>Welcome to AirStay</h1>
-      <nav>
-        <%= link_to 'Sign In', new_user_session_path %>
-        <%= link_to 'Sign Up', new_user_registration_path %>
-      </nav>
+      <h1>👋 <%= @random_region.country.emoji_flag %> Welcome to AirStay</h1>
   <% end %>
 </header>
 
 <nav class="home-nav">
   <h2 class="home-nav_explore">
     <%= link_to explore_path, class: 'home-nav_explore_link' do %>
-      <i class="fa fa-compass fa-spin" aria-hidden="true"></i> Explore
+      <i class="fa fa-compass fa-spin" aria-hidden="true"></i> Explore places
     <% end %>
   </h2>
   <% if user_signed_in? %>
@@ -27,3 +28,16 @@
     </h3>
   <% end %>
 </nav>
+
+<section>
+  <% if user_signed_in? %>
+      <nav>
+        <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
+      </nav>
+  <% else %>
+      <nav>
+        <%= link_to 'Sign Up', new_user_registration_path %>
+        <%= link_to 'Log In', new_user_session_path %>
+      </nav>
+  <% end %>
+</header>

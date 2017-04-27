@@ -5,5 +5,7 @@ class HomeController < ApplicationController
       # If user has just signed up, make them fill out their profile
       redirect_to new_profile_url if @profile.nil?
     end
+
+    @random_region = Region.offset(rand(Region.count)).first
   end
 end
